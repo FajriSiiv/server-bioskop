@@ -1,4 +1,3 @@
-// Movie.js
 import mongoose from "mongoose";
 
 const movieSchema = new mongoose.Schema({
@@ -17,6 +16,11 @@ const movieSchema = new mongoose.Schema({
   bookedSeats: {
     type: [Number],
     default: [],
+  },
+  showtime: {
+    type: Date,
+    required: true,
+    default: Date.now,
   },
 });
 

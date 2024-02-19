@@ -22,4 +22,9 @@ router.get("/ticket", getTickets);
 router.get("/ticket:id", getTicketById);
 router.post("/ticket", createTicket);
 
+// TEST
+// router.get("/test", (req, res) => {
+//   res.sendStatus(200);
+// });
+
 export default router;

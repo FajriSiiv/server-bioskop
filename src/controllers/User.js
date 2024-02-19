@@ -13,12 +13,12 @@ export const getUser = async (req, res) => {
 export const createUser = async (req, res) => {
   try {
     const newUser = new User({
-      username: "user1",
-      password: "user1",
+      username: "admin",
+      password: "admin",
       contactInfo: {
-        name: "fajri1",
-        email: "email1@google.com",
-        phoneNumber: "08221",
+        name: "admin",
+        email: "admin@google.com",
+        phoneNumber: "08221111111",
       },
     });
 

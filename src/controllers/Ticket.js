@@ -1,13 +1,16 @@
 import { Movie } from "../model/Movie.js";
 import { Ticket } from "../model/Ticket.js";
 import { checkSeatAvailability } from "../utils/index.js";
+import { ticketValidationSchema } from "../validations/ticket.validation.js";
 
 export const createTicket = async (req, res) => {
   const { seatNumber, movieId } = req.body;
 
-  const userId = "65d08b036eb4201e2e579e5b";
+  const userId = "65d318b380e6a4913b2aca49";
 
   try {
+    await ticketValidationSchema.validateAsync({ seatNumber, movieId });
+
     const checkingSeats = await checkSeatAvailability(movieId, seatNumber);
 
     if (checkingSeats)
@@ -31,10 +34,6 @@ export const createTicket = async (req, res) => {
       availableSeats: updatedAvailableSeats,
       bookedSeats: updatedBookedSeats,
     });
-
-    // setTimeout(() => {
-    //   deleteTicket(ticket._id);
-    // }, 60 * 1000);
 
     res.send(ticket);
   } catch (error) {

@@ -54,7 +54,6 @@ export const deleteAllTicketsAfterMovieEnds = (
   setTimeout(() => {
     deleteAllTickets(movieId);
     deleteMovieExpired(movieId);
-    console.log("hello");
   }, timeDiff);
 };
 
