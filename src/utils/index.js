@@ -9,7 +9,7 @@ export const checkSeatAvailability = async (movieId, seatNumber) => {
     const isSeatBooked = movie.bookedSeats.filter((seat) =>
       seatNumber.includes(seat)
     );
-
+    console.log(isSeatBooked);
     if (isSeatBooked.length === 0) return seatBooked;
 
     return !seatBooked;
@@ -37,20 +37,15 @@ export const deleteAllTicketsAfterMovieEnds = (
   minutes,
   movieId
 ) => {
-  // Buat objek Date yang mewakili waktu saat ini
   const currentTime = new Date();
 
-  // Atur waktu menjadi jam 6 sore
   const endTime = new Date(currentTime);
-  endTime.setHours(hours, minutes, 0, 0); // Atur jam ke 18 (6 sore), menit ke 45, detik ke 0, dan milidetik ke 0
+  endTime.setHours(hours, minutes, 0, 0);
 
-  // Tambahkan menit movie ke waktu yang telah diatur
   endTime.setMinutes(endTime.getMinutes() + movieMinutes);
 
-  // Hitung selisih waktu antara waktu saat ini dan waktu yang telah diatur
   const timeDiff = endTime.getTime() - currentTime.getTime();
 
-  // Gunakan setTimeout dengan selisih waktu untuk menjalankan fungsi deleteAllTickets
   setTimeout(() => {
     deleteAllTickets(movieId);
     deleteMovieExpired(movieId);

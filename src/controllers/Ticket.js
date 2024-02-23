@@ -6,9 +6,10 @@ import { ticketValidationSchema } from "../validations/ticket.validation.js";
 export const createTicket = async (req, res) => {
   const { seatNumber, movieId } = req.body;
 
-  const userId = "65d318b380e6a4913b2aca49";
-
+  // const userId = "65d318b380e6a4913b2aca49";
   try {
+    const movie = await Movie.findById(movieId);
+
     await ticketValidationSchema.validateAsync({ seatNumber, movieId });
 
     const checkingSeats = await checkSeatAvailability(movieId, seatNumber);
@@ -16,15 +17,23 @@ export const createTicket = async (req, res) => {
     if (checkingSeats)
       return res.send({ message: "Kursi yang dipilh sudah dipesan" });
 
+    const checkManySeat = movie.availableSeats.every(
+      (value) => value < seatNumber
+    );
+
+    if (checkManySeat)
+      return res.send({
+        message: "Kursi yang dipilih sudah dipesan atau tidak tersedia",
+      });
+
     const ticket = await Ticket.create({
       movie: movieId,
       seatNumber: seatNumber,
       showTime: new Date(),
       status: true,
-      user: userId,
+      // user: userId
     });
 
-    const movie = await Movie.findById(movieId);
     const updatedAvailableSeats = movie.availableSeats.filter(
       (seat) => !seatNumber.includes(seat)
     );
@@ -35,7 +44,7 @@ export const createTicket = async (req, res) => {
       bookedSeats: updatedBookedSeats,
     });
 
-    res.send(ticket);
+    res.send({ message: "Tiket berhasil dibuat!" });
   } catch (error) {
     res.send({ error: error.message });
   }
@@ -44,12 +53,12 @@ export const createTicket = async (req, res) => {
 export const getTickets = async (req, res) => {
   try {
     const ticket = await Ticket.find()
-      .populate("user")
+      // .populate("user")
       .populate({ path: "movie", select: ["-availableSeats", "-bookedSeats"] });
 
     res.send(ticket);
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -61,16 +70,18 @@ export const getTicketById = async (req, res) => {
 
     res.send(ticket);
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json({ message: error.message });
   }
 };
 
-const deleteTicket = async (ticketId) => {
+export const deleteTicketById = async (req, res) => {
+  const { ticketId } = req.params;
+
   try {
     await Ticket.findByIdAndDelete(ticketId);
-    console.log(`Ticket with ID ${ticketId} has been deleted.`);
+
+    res.send({ message: "Tiket berhasil di hapus" });
   } catch (error) {
-    console.error("Error while deleting ticket:", error);
-    throw error;
+    res.status(404).json({ message: error.message });
   }
 };

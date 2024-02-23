@@ -6,7 +6,7 @@ export const getUser = async (req, res) => {
 
     res.send(user);
   } catch (error) {
-    res.status(404).json(error);
+    res.status(404).json({ message: error.message });
   }
 };
 

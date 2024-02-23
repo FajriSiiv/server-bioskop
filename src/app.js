@@ -9,10 +9,8 @@ const PORT = process.env.PORT || 3000;
 dotenv.config();
 const uri = process.env.DATABASE_URL;
 
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// parse application/json
 app.use(bodyParser.json());
 
 mongoose
