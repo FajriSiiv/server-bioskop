@@ -35,4 +35,8 @@ router.delete("/ticket/:ticketId", deleteTicketById);
 //   res.sendStatus(200);
 // });
 
+router.get("/", (req, res) => {
+  res.send({ message: "Connect to database" });
+});
+
 export default router;
