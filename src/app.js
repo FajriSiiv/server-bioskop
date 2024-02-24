@@ -3,14 +3,26 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import router from "./router/index.js";
 import bodyParser from "body-parser";
+import helmet from "helmet";
+import cors from "cors";
+import { rateLimit } from "express-rate-limit";
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 dotenv.config();
 const uri = process.env.DATABASE_URL;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 15 menit
+  max: 50, // maksimal 100 permintaan dalam jangka waktu yang ditentukan
+  message: "Terlalu banyak permintaan dari IP Anda, silakan coba lagi nanti.",
+});
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(helmet());
+app.use(cors());
+app.use(limiter);
 app.use(bodyParser.json());
 
 mongoose
