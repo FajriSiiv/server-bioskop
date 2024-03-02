@@ -14,8 +14,8 @@ dotenv.config();
 const uri = process.env.DATABASE_URL;
 
 const limiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 15 menit
-  max: 50, // maksimal 100 permintaan dalam jangka waktu yang ditentukan
+  windowMs: 10 * 60 * 1000, // 10 menit
+  max: 200, // maksimal 100 permintaan dalam jangka waktu yang ditentukan
   message: "Terlalu banyak permintaan dari IP Anda, silakan coba lagi nanti.",
 });
 
