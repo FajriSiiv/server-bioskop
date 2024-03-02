@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+const currentTime = new Date();
+
+const newShowtime = new Date(currentTime.getTime() + 5 * 60000);
+
 const movieSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -20,7 +24,7 @@ const movieSchema = new mongoose.Schema({
   showtime: {
     type: Date,
     required: true,
-    default: Date.now,
+    default: newShowtime,
   },
 });
 
